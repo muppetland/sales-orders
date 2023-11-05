@@ -1,0 +1,132 @@
+#IHBF - 231103
+#script to upload all instances an microservice in our docker...
+version: '3.8'
+services:
+  #setting our configuration for eureka server...
+  discovery-service-microservice:
+    container_name: discovery-service-microservice
+    build:
+      context: discovery-server
+      dockerfile: Dockerfile
+    image: discovery-server-microservice:1.0
+    ports:
+      - "8761:8761"
+    expose:
+      - "8761"
+
+  #setting our configuration for customers service...
+  customers-microservice:
+    container_name: customers-microservice
+    build:
+      context: customers-api
+      dockerfile: Dockerfile
+    image: customers-microservice:1.0
+    ports:
+      - "6662:9992"
+    expose:
+      - "9992"
+    links:
+      - "discovery-service-microservice"
+    depends_on:
+      - discovery-service-microservice
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service-microservice:8761/eureka
+
+  #setting our configuration for products service...
+  products-microservice:
+    container_name: products-microservice
+    build:
+      context: products-api
+      dockerfile: Dockerfile
+    image: products-microservice:1.0
+    ports:
+      - "6663:9993"
+    expose:
+      - "9993"
+    links:
+      - "discovery-service-microservice"
+      - "customers-microservice"
+    depends_on:
+      - discovery-service-microservice
+      - customers-microservice
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service-microservice:8761/eureka
+
+  #setting our configuration for orders service...
+  orders-microservice:
+    container_name: orders-microservice
+    build:
+      context: orders-api
+      dockerfile: Dockerfile
+    image: orders-microservice:1.0
+    ports:
+      - "6664:9994"
+    expose:
+      - "9994"
+    links:
+      - "discovery-service-microservice"
+      - "customers-microservice"
+      - "products-microservice"
+    depends_on:
+      - discovery-service-microservice
+      - customers-microservice
+      - products-microservice
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service-microservice:8761/eureka
+
+  #setting our configuration for gateway service...
+  api-gateway-microservice:
+    container_name: api-gateway-microservice
+    build:
+      context: api-gateway
+      dockerfile: Dockerfile
+    image: api-gateway-microservice:1.0
+    ports:
+      - "6661:9991"
+    expose:
+      - "9991"
+    links:
+      - "discovery-service-microservice"
+    depends_on:
+      - discovery-service-microservice
+      - customers-microservice
+      - products-microservice
+      - orders-microservice
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service-microservice:8761/eureka
+
+
+  #setting extra configurations for testing phase, checkup errors and MySQL server...
+  #a.- adding MySQL server...
+  db-mysql:
+    container_name: db-mysql
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'liverpool'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+#all microservices will be communicated by the same network, if any service is out of this network we can't reach it...
+networks:
+  default:
+    name: liverpool-network
+    driver: bridge
+
+#download available images from dockerHub...
+volumes:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_bundled-plugins:
+  postgresql:
+  postgresql_data:
+  mysql_data:

@@ -1,0 +1,82 @@
+#set port for our api...
+server:
+  port: 9991
+
+#setup application name...
+spring:
+  application:
+    name: api-gateway
+
+  #setup api gateway path...
+  cloud:
+    discovery:
+      enabled: true
+    gateway:
+      metrics:
+        enabled: true
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: customers-api-id
+          uri: lb://customers-service
+          predicates:
+            - Path=/customers-api/**
+            - Method=GET,POST,DELETE,PUT,OPTIONS
+
+        - id: orders-api-id
+          uri: lb://orders-service
+          predicates:
+            - Path=/orders-api/**
+            - Method=GET,POST,DELETE,PUT,OPTIONS
+
+        - id: products-api-id
+          uri: lb://products-service
+          predicates:
+            - Path=/products-api/**
+            - Method=GET,POST,DELETE,PUT,OPTIONS
+
+    #Disable config server....
+    config:
+      import-check:
+        enabled: false
+
+#config our client for Eureka server...
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    enabled: true
+    healthcheck:
+      enabled: true
+    registry-with-eureka: true
+    fetch-registry: true
+    service-url:
+      #defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+      defaultZone: http://localhost:8761/eureka
+
+#about the app...
+info:
+  app:
+    name: ${spring.application.name}
+
+#config actuator...
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+          - mappings
+          - env
+          - health
+          - info
+          - gateway
+
+#enable a file to post this data to ELK...
+logging:
+  file:
+    name: logs/liverpool-api.log

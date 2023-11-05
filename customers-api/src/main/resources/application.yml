@@ -1,0 +1,96 @@
+#set port and contextpath for our api...
+server:
+  port: 9992
+  servlet:
+    context-path: /customers-api
+
+#setup application name...
+spring:
+  application:
+    name: customers-service
+
+    #disable config server....
+    config:
+      import-check:
+        enabled: false
+
+  #access to our mysql database...
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://db-mysql:3306/liverpool
+    username: user
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+#aditional variables...
+config-options:
+  pageNo: "0"
+  pageSize: "20"
+  filterOption: 1
+  startDate: ""
+  endDate: ""
+
+#config circuit breaker...
+management:
+  health:
+    circuitbreakers:
+      enable: true
+    enpoints:
+      web:
+        exposure:
+          include: health
+    enpoint:
+      health:
+        show-details: always
+  endpoints:
+    web:
+      exposure:
+        include:
+          - mappings
+          - env
+          - health
+          - info
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      cbNTA:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+
+#setup eureka client
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    registry-with-eureka: true
+    fetch-registry: true
+    service-url:
+      #defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+      defaultZone: http://localhost:8761/eureka
+
+#about the app...
+info:
+  app:
+    name: ${spring.application.name}
+
+#enable a file to post this data to ELK...
+logging:
+  file:
+    name: logs/liverpool-api.log
