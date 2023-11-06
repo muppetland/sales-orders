@@ -7,6 +7,6 @@ El esquema de la base de datos se construye de manera automática al realizar el
 
 La versión de java que se utiliza en este proyecto es la versión 17, de igual manera el proyecto contiene comunicaciones entre los microservicios mediante webClient, se tiene documentación de las 3 instancias del proyecto, estás están apoyada con swagger y las rutas se encuentran en la colección de postman para su consulta y puedan revisar el tipo de dato que se solicita en cada endpoint, las pruebas unitarias se realizaron a nivel CRUD.
 
-Una vez indicado lo más importante, basta con ejecutar desde su terminal el archivo “Docker-compose.yml” que se encuentra en raíz del repositorio y con eso podrán iniciar la validación del proyecto, de igual manera se incluyen algunas evidencias del despliegue del proyecto en Docker y la manera en que estás intercomunicadas y funcionando de manera correcta en base a la solicitud del documento enviado, cualquier duda o comentario estoy a la orden.
+Una vez indicado lo más importante, basta con ejecutar desde su terminal el archivo “Docker-compose.yml” que se encuentra en raíz del repositorio y con eso podrán iniciar la validación del proyecto, de igual manera se incluyen algunas evidencias del despliegue del proyecto en Docker y la manera en que están intercomunicadas y funcionando de manera correcta en base a la solicitud del documento enviado, cualquier duda o comentario estoy a la orden.
 
 
