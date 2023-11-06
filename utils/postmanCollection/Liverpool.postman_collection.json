@@ -1,0 +1,644 @@
+{
+	"info": {
+		"_postman_id": "4fa4da30-5b2c-4b68-afe0-48932c023182",
+		"name": "Liverpool",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6776693"
+	},
+	"item": [
+		{
+			"name": "Customers",
+			"item": [
+				{
+					"name": "newCustomer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"activate\": true,\r\n        \"customerName\": \"Lula\",\r\n        \"dateBirth\": \"1986-10-01\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6661/customers-api/newCustomer",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"customers-api",
+								"newCustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllCustomers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6661/customers-api/getAllCustomers",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"customers-api",
+								"getAllCustomers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCustomerByName",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6661/customers-api/getCustomerByName?customerName=cheche",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"customers-api",
+								"getCustomerByName"
+							],
+							"query": [
+								{
+									"key": "customerName",
+									"value": "cheche"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCustomerByID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6661/customers-api/2",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"customers-api",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCustomer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:6661/customers-api/deleteCustomer/1",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"customers-api",
+								"deleteCustomer",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateCustomer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"activate\": true,\r\n        \"customerName\": \"Juanito Maracas\",\r\n        \"dateBirth\": \"1986-12-01\",\r\n        \"customerID\": 1\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6661/customers-api/updateCustomer",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"customers-api",
+								"updateCustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "swagger-docs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:6661/customers-api/v3/api-docs",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"customers-api",
+								"v3",
+								"api-docs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "newProduct",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"description\": \"refrigerador samsung\",\r\n        \"amount\": 3000,\r\n        \"stock\": 50,\r\n        \"activate\":true\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6661/products-api/newProduct",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"products-api",
+								"newProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllProducts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6661/products-api/getAllProducts",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"products-api",
+								"getAllProducts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getProuctByID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6661/products-api/1",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"products-api",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getProuctByName",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6661/products-api/getProductByName?productName=refrigerador samsung",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"products-api",
+								"getProductByName"
+							],
+							"query": [
+								{
+									"key": "productName",
+									"value": "refrigerador samsung"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteProduct",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6661/products-api/deleteProduct/2",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"products-api",
+								"deleteProduct",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateProduct",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"productID\":1,        \r\n        \"amount\": 5000,\r\n        \"stock\": 50,\r\n        \"activate\":true,\r\n        \"description\": \"refrigerador samsung\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6661/products-api/updateProduct",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"products-api",
+								"updateProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateProductPurchase",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:6661/products-api/updateProductPurchase?productID=3&purchasedItems=1",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"products-api",
+								"updateProductPurchase"
+							],
+							"query": [
+								{
+									"key": "productID",
+									"value": "3"
+								},
+								{
+									"key": "purchasedItems",
+									"value": "1"
+								},
+								{
+									"key": "",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateProductCancelledPurchase",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:6661/products-api/updateProductCancelledPurchase?productID=3&purchasedItems=10",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"products-api",
+								"updateProductCancelledPurchase"
+							],
+							"query": [
+								{
+									"key": "productID",
+									"value": "3"
+								},
+								{
+									"key": "purchasedItems",
+									"value": "10"
+								},
+								{
+									"key": "",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "swagger-docs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:6661/products-api/v3/api-docs",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"products-api",
+								"v3",
+								"api-docs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "newOrder",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customerName\":\"cheche\",\r\n    \"purchasedItems\":[\r\n        {\r\n            \"description\":\"refrigerador samsung\",\r\n            \"amount\":95,\r\n            \"items\":1\r\n        }            \r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6661/orders-api/newOrder",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"orders-api",
+								"newOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrderByID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:6661/orders-api/getOrderByID?orderID=e29b9c7e-040f-4e4f-a6dc-fc8026c236fe",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"orders-api",
+								"getOrderByID"
+							],
+							"query": [
+								{
+									"key": "orderID",
+									"value": "e29b9c7e-040f-4e4f-a6dc-fc8026c236fe"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "swagger-docs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:6661/orders-api/v3/api-docs",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"orders-api",
+								"v3",
+								"api-docs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrderByPurchaseDate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:6661/orders-api/getOrderByPurchaseDate?startDate=04/11/2023&endDate=06/11/2023",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"orders-api",
+								"getOrderByPurchaseDate"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "04/11/2023"
+								},
+								{
+									"key": "endDate",
+									"value": "06/11/2023"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllOrdersByCancellationDate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:6661/orders-api/getOrderByCancellationDate?startDate=04/11/2023",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"orders-api",
+								"getOrderByCancellationDate"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "04/11/2023"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancelOrder",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:6661/orders-api/cancelOrder?orderID=dbb076ac-3167-4e17-ad64-4a1f90ab554e",
+							"host": [
+								"localhost"
+							],
+							"port": "6661",
+							"path": [
+								"orders-api",
+								"cancelOrder"
+							],
+							"query": [
+								{
+									"key": "orderID",
+									"value": "dbb076ac-3167-4e17-ad64-4a1f90ab554e"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

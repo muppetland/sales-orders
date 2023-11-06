@@ -21,8 +21,8 @@ services:
       context: customers-api
       dockerfile: Dockerfile
     image: customers-microservice:1.0
-    ports:
-      - "6662:9992"
+    #ports:
+    #  - "6662:9992"
     expose:
       - "9992"
     links:
@@ -39,8 +39,8 @@ services:
       context: products-api
       dockerfile: Dockerfile
     image: products-microservice:1.0
-    ports:
-      - "6663:9993"
+    #ports:
+    #  - "6663:9993"
     expose:
       - "9993"
     links:
@@ -59,8 +59,8 @@ services:
       context: orders-api
       dockerfile: Dockerfile
     image: orders-microservice:1.0
-    ports:
-      - "6664:9994"
+    #ports:
+    #  - "6664:9994"
     expose:
       - "9994"
     links:

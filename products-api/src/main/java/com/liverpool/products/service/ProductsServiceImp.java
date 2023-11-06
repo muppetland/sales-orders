@@ -32,24 +32,24 @@ public class ProductsServiceImp implements ProductsService {
     @Override
     public List<Products> getAllProducts(LogsHandle logsHandle, HttpServletRequest httpServletRequest) {
         //declare array to storage all records found...
-        vlMsg = "Declaramos el listado que contrendrá la información de los productos vigentes en sistema.";
+        vlMsg = "Create a list that will be storage all products.";
         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
         List<Products> productsList = new ArrayList<Products>();
 
         //request all products...
-        vlMsg = "Realizamos la consulta para traer el listado de todos los productos registrados en sistema.";
+        vlMsg = "Invoke query to get all products in database.";
         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
         productsRepository.findAll().forEach(productsList::add);
 
         //if we don't have any record, we must notice...
         if (productsList.isEmpty()) {
-            vlMsg = "No tenemos hasta el momento ningun producto registrado en sistema.";
+            vlMsg = "No products registered yet.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             throw new IllegalQueryOperationException(vlMsg);
         }
 
         //products found...
-        vlMsg = "A continuación presentamos un listado de los productos encontrados en sistema.";
+        vlMsg = "Show all products registered.";
         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
         return productsList;
     }
@@ -59,7 +59,7 @@ public class ProductsServiceImp implements ProductsService {
         //if request don't send the productID we can't continues...
         if (productID == null || productID == 0) {
             //we can't continues 'cause productID is mandatory for this action...
-            vlMsg = "Es necesario incluir en el pathvariable el ID del producto, de lo contrario no podremos realizar la petición solicitada.";
+            vlMsg = "productID is mandatory.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             throw new BadRequestException(vlMsg);
         } else {
@@ -67,13 +67,13 @@ public class ProductsServiceImp implements ProductsService {
             Products products = productsRepository.findByProuctID(productID);
             if (products == null) {
                 //no record found...
-                vlMsg = "No se ha encontrado información del productoID [" + productID + "]";
+                vlMsg = "productoID [" + productID + "] was not found.";
                 logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                 throw new IllegalQueryOperationException(vlMsg);
             }
 
             //product found...
-            vlMsg = "El productoID [" + productID + "] se encuentra vigente en sistema.";
+            vlMsg = "productoID [" + productID + "] is available.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             return products;
         }
@@ -116,66 +116,66 @@ public class ProductsServiceImp implements ProductsService {
     public Products newProduct(Products products, LogsHandle logsHandle, HttpServletRequest httpServletRequest) {
         //we need to know if the body sent have is not null...
         if (products == null) {
-            vlMsg = "Es necesario enviar información en el cuerpo del API, de lo contrario no podremos proceder su petición.";
+            vlMsg = "requestBody is mandatory.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             throw new BadRequestException(vlMsg);
         } else {
             //descript must be included...
             if (products.getDescription() == null || products.getDescription().trim().equalsIgnoreCase("")) {
-                vlMsg = "Es necesario incluir el nombre del producto a registrar, de lo contrario no podremos realizar la petición solicitada.";
+                vlMsg = "description is mandatory.";
                 logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                 throw new BadRequestException(vlMsg);
             } else {
                 //amount must be included...
                 if (products.getAmount() == null || products.getAmount() <= 0) {
                     //amount must be higher than 0 or amount must be present...
-                    vlMsg = "Es necesario ingresr un monto mayor a $0 o bien, el monto deberá estar presente, de lo contrario no podremos realizar la petición solicitada.";
+                    vlMsg = "amount is mandatory.";
                     logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                     throw new BadRequestException(vlMsg);
                 } else {
                     //stock must be included...
                     if (products.getStock() == null || products.getStock() <= 0) {
                         //stock must be higher than 0 or stock must be present...
-                        vlMsg = "Es necesario ingresr un valor mayor a 0 o bien, el valor de stock deberá estar presente, de lo contrario no podremos realizar la petición solicitada.";
+                        vlMsg = "stock value is mandatory.";
                         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                         throw new BadRequestException(vlMsg);
                     } else {
                         //status must be included...
                         if (products.getActivate() == null) {
-                            vlMsg = "Es necesario indicar con false o true la actividad del producto a registrar, 'true' para activo y 'false' para inactivo, de lo contrario no podremos realizar la petición solicitada.";
+                            vlMsg = "activate status is mandatory";
                             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                             throw new BadRequestException(vlMsg);
                         } else {
                             //validate if current product is not present in system...
-                            vlMsg = "Consultando información de los datos enviados.";
+                            vlMsg = "Getting information from requestBody.";
                             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                             Products productFound = productsRepository.findByDescriptionIgnoreCase(products.getDescription().trim());
 
                             //validate if current record exists in system...
                             if (productFound == null) {
                                 //we can register current product...
-                                vlMsg = "El registro enviado no existe, por lo tanto podemo reistrgar el producto enviado.";
+                                vlMsg = "product was not found, we can't continues with the process.";
                                 logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
 
                                 // we need to setup current datetime to get register dateTime value...
-                                vlMsg = "Damos la hora y fecha del registro del producto.";
+                                vlMsg = "Setting date values.";
                                 logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                                 LocalDateTime now = LocalDateTime.now();
                                 products.setRegistrationDateTime(now);
 
                                 //save record...
-                                vlMsg = "Guardamos el registro del objeto enviado.";
+                                vlMsg = "Save object.";
                                 logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                                 Products productSaved = productsRepository.save(products);
 
                                 //product saved...
-                                vlMsg = "El producto se ha registrado con el siguiente ID [" + productSaved.getProductID() + "]";
+                                vlMsg = "productID[" + productSaved.getProductID() + "] was registered.";
                                 logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                                 return productSaved;
                             } else {
                                 // we can't continues 'cause this product is already registered...
-                                vlMsg = "Lo sentimos, el producto que intenta registrar ya existe en sistema.";
+                                vlMsg = "This product is already registered.";
                                 logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                                 throw new IllegalQueryOperationException(vlMsg);
                             }
@@ -192,7 +192,7 @@ public class ProductsServiceImp implements ProductsService {
         //if request don't sent the productID we can't continues...
         if (productDTO.getProductID() == null || productDTO.getProductID() == 0) {
             //we can't continues 'cause productID is mandatory for this action...
-            vlMsg = "Es necesario incluir el ID del producto a modificar, de lo contrario no podremos realizar la petición solicitada.";
+            vlMsg = "productID is mandatory.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             throw new BadRequestException(vlMsg);
         } else {
@@ -201,37 +201,37 @@ public class ProductsServiceImp implements ProductsService {
 
             //descript must be included...
             if (productDTO.getDescription() == null || productDTO.getDescription().trim().equalsIgnoreCase("")) {
-                vlMsg = "Es necesario incluir el nombre del producto a editar, de lo contrario no podremos realizar la petición solicitada.";
+                vlMsg = "description is mandatory.";
                 logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                 throw new BadRequestException(vlMsg);
             } else {
                 //amount must be included...
                 if (productDTO.getAmount() == null || productDTO.getAmount() <= 0) {
                     //amount must be higher than 0 or amount must be present...
-                    vlMsg = "Es necesario ingresr un monto mayor a $0 o bien, el monto deberá estar presente, de lo contrario no podremos realizar la petición solicitada.";
+                    vlMsg = "amount is mandatory.";
                     logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                     throw new BadRequestException(vlMsg);
                 } else {
                     //stock must be included...
                     if (productDTO.getStock() == null || productDTO.getStock() <= 0) {
                         //stock must be higher than 0 or stock must be present...
-                        vlMsg = "Es necesario ingresr un valor mayor a 0 o bien, el valor de stock deberá estar presente, de lo contrario no podremos realizar la petición solicitada.";
+                        vlMsg = "stock value is mandatory.";
                         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                         throw new BadRequestException(vlMsg);
                     } else {
                         //status must be included...
                         if (productDTO.getActivate() == null) {
-                            vlMsg = "Es necesario indicar con false o true la actividad del producto a editar, 'true' para activo y 'false' para inactivo, de lo contrario no podremos realizar la petición solicitada.";
+                            vlMsg = "activate status is mandatory.";
                             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                             throw new BadRequestException(vlMsg);
                         } else {
                             //we need to validate if productID exists...
-                            vlMsg = "Validamos que el ID del producto a editar exista.";
+                            vlMsg = "productID should be exists.";
                             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                             productsFound = productsRepository.findById(productDTO.getProductID())
                                     .orElseThrow(() -> {
                                         //we don't have information with those arguments...
-                                        vlMsg = "El ID del producto enviado no existe, por lo tanto, no podremos actualizar los datos del producto enviado.";
+                                        vlMsg = "productID was not found, we can't continues with the process.";
                                         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                                         throw new IllegalQueryOperationException(vlMsg);
                                     });
@@ -241,13 +241,13 @@ public class ProductsServiceImp implements ProductsService {
             }
 
             //passing values to entity from dto...
-            vlMsg = "Pasando DTO a Entity para realizar la actualización de la información.";
+            vlMsg = "Changing DTO to Entity.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             Products productsToUpdate = DTOtoEntity(productDTO);
             productsToUpdate.setRegistrationDateTime(productsFound.getRegistrationDateTime());
 
             //if preview validations are ok, we can continues with the update...
-            vlMsg = "Realizamos la actualización de la información del productoID enviado.";
+            vlMsg = "Update data.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             Products productsEdited = productsRepository.save(productsToUpdate);
             return productsEdited;
@@ -351,24 +351,24 @@ public class ProductsServiceImp implements ProductsService {
         //if request don't sent the productID we can't continues...
         if (productID == null || productID == 0) {
             //we can't continues 'cause productID is mandatory for this action...
-            vlMsg = "Es necesario incluir en el pathvariable el ID del product, de lo contrario no podremos realizar la petición solicitada.";
+            vlMsg = "productID is mandatory.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             throw new BadRequestException(vlMsg);
         } else {
             //get information from current product...
-            vlMsg = "Realizamos la consulta del productID [" + productID + "]";
+            vlMsg = "Invoke query to get productID [" + productID + "] data.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             Products products = productsRepository.findById(productID)
                     .orElseThrow(() ->
                     {
                         //no record found...
-                        vlMsg = "No se ha encontrado información del productID [" + productID + "]";
+                        vlMsg = "productID [" + productID + "] was not found.";
                         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                         throw new IllegalQueryOperationException(vlMsg);
                     });
 
             //product found...
-            vlMsg = "El productID [" + productID + "] se ha eliminado del sistema.";
+            vlMsg = "productID [" + productID + "] has been deleted.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             productsRepository.delete(products);
         }

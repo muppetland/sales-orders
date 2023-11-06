@@ -1,6 +1,6 @@
 #set port for our api...
 server:
-  port: 9991
+  port: 6661
 
 #setup application name...
 spring:

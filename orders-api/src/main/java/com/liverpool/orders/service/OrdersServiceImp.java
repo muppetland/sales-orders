@@ -47,7 +47,7 @@ public class OrdersServiceImp implements OrdersService {
     private WebClient.Builder webClientBuilder;
     public static final Logger logTracking = LoggerFactory.getLogger(OrdersServiceImp.class);
     private String vlMsg = "";
-    private List<OrdersDetailResponse> ordersDetailResponsesList;
+    private List<OrdersDetailResponse> ordersDetailResponsesList = new ArrayList<>();
     private List<OrdersDetailDTO> ordersDetailToUpdateStock = new ArrayList<>();
     private static Double subTotal = (double) 0;
     private static Double tax = (double) 0;
@@ -86,15 +86,19 @@ public class OrdersServiceImp implements OrdersService {
             //we need to read each item and validate if this product exists, otherwise we can't continues...
             vlMsg = "Loop each item in current list to validate if those products exists in our database..";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
-            ordersDetailResponsesList = Collections.unmodifiableList(ordersRequestDTO.getPurchasedItems().stream().filter(a -> {
-                if (existsProduct(a.getDescription().trim(), a.getAmount(), a.getItems(), logsHandle, httpServletRequest) == true) {
-                    //replace current value of this product...
-                    a.setAmount(outFinalAmount);
-                    return true;
-                } else {
-                    return false;
-                }
-            }).collect(Collectors.toList()));
+            ordersDetailResponsesList.clear();
+            ordersDetailToUpdateStock.clear();
+            ordersDetailResponsesList = ordersRequestDTO.getPurchasedItems()
+                    .stream()
+                    .filter(a -> {
+                        if (existsProduct(a.getDescription().trim(), a.getAmount(), a.getItems(), logsHandle, httpServletRequest) == true) {
+                            //replace current value of this product...
+                            a.setAmount(outFinalAmount);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }).collect(Collectors.toList());
 
             //now we have all products validated and we have to get final amounts and tax for this purchase...
             purchasedItems = ordersDetailResponsesList.stream().mapToInt(a -> a.getItems()).sum();
@@ -111,7 +115,17 @@ public class OrdersServiceImp implements OrdersService {
             }
 
             //finally we save our sales order...
-            OrdersDTO ordersDTO = OrdersDTO.builder().orderID(null).cancellationDateTime(null).purchasedate(now).subTotal(subTotal).tax(tax).totalAmount(totalAmount).status("v").purchasedItems(purchasedItems).customerID(customerID).build();
+            OrdersDTO ordersDTO = OrdersDTO.builder()
+                    .orderID(null)
+                    .cancellationDateTime(null)
+                    .purchasedate(now)
+                    .subTotal(subTotal)
+                    .tax(tax)
+                    .totalAmount(totalAmount)
+                    .status("v")
+                    .purchasedItems(purchasedItems)
+                    .customerID(customerID)
+                    .build();
 
             //save order...
             vlMsg = "Save current order...";
@@ -135,7 +149,16 @@ public class OrdersServiceImp implements OrdersService {
         //create a response class...
         vlMsg = "Return a complete response from current order.";
         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
-        OrdersResponse ordersResponse = OrdersResponse.builder().customerName(customerResponse.getCustomerName()).purchasedItems(ordersDetailResponsesList).totalAmount(NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(totalAmount)).subtotal(NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(subTotal)).tax(NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(tax)).orderID(orderSaved.getOrderID()).datePurchase(nowDate).build();
+        OrdersResponse ordersResponse = OrdersResponse
+                .builder()
+                .customerName(customerResponse.getCustomerName())
+                .purchasedItems(ordersDetailResponsesList)
+                .totalAmount(NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(totalAmount))
+                .subtotal(NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(subTotal))
+                .tax(NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(tax))
+                .orderID(orderSaved.getOrderID())
+                .datePurchase(nowDate)
+                .build();
         return ordersResponse;
     }
 
@@ -168,7 +191,11 @@ public class OrdersServiceImp implements OrdersService {
         List<OrdersDetailResponse> ordersDetailResponses = new ArrayList<>();
         ordersDetailResponses = ordersDetailsMainList.stream().map(a -> {
             //we need to creat an objet OrdersDetailResponse and fill it with current information...
-            OrdersDetailResponse odersDetailResp = OrdersDetailResponse.builder().items(a.getPurchasedItems()).description(getProductNameByID(a.getProductID(), logsHandle, httpServletRequest)).amount(a.getAmount()).build();
+            OrdersDetailResponse odersDetailResp = OrdersDetailResponse
+                    .builder()
+                    .items(a.getPurchasedItems())
+                    .description(getProductNameByID(a.getProductID(), logsHandle, httpServletRequest)).amount(a.getAmount())
+                    .build();
             return odersDetailResp;
         }).collect(Collectors.toList());
 
@@ -431,7 +458,11 @@ public class OrdersServiceImp implements OrdersService {
                 logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                 try {
                     //request update stock...
-                    ProductsUpdateStock productsUpdateStock = webClientBuilder.build().put().uri("http://products-service/products-api/updateProductPurchase?productID=" + a.getProductID() + "&purchasedItems=" + a.getPurchasedItems()).retrieve().bodyToMono(ProductsUpdateStock.class).block();
+                    ProductsUpdateStock productsUpdateStock = webClientBuilder.build().put()
+                            .uri("http://products-service/products-api/updateProductPurchase?productID=" + a.getProductID() + "&purchasedItems=" + a.getPurchasedItems())
+                            .retrieve()
+                            .bodyToMono(ProductsUpdateStock.class)
+                            .block();
                 } catch (Exception ex) {
                     //maybe we can't access to api or return 500 (record doesn't exits)
                     logsHandle.addLogController(logTracking, ex.getMessage(), httpServletRequest);
@@ -462,7 +493,11 @@ public class OrdersServiceImp implements OrdersService {
     private Boolean retrieveProductToStock(Long productID, Integer retrivedItems, LogsHandle logsHandle, HttpServletRequest httpServletRequest) {
         try {
             //Update stock...
-            ProductsByNameResponse customerResponse = webClientBuilder.build().put().uri("http://products-service/products-api/updateProductCancelledPurchase?productID=" + productID + "&purchasedItems=" + retrivedItems).retrieve().bodyToMono(ProductsByNameResponse.class).block();
+            ProductsByNameResponse customerResponse = webClientBuilder.build().put()
+                    .uri("http://products-service/products-api/updateProductCancelledPurchase?productID=" + productID + "&purchasedItems=" + retrivedItems)
+                    .retrieve()
+                    .bodyToMono(ProductsByNameResponse.class)
+                    .block();
             return true;
         } catch (Exception ex) {
             //maybe we can't access to api or return 500 (record doesn't exits)
@@ -530,13 +565,14 @@ public class OrdersServiceImp implements OrdersService {
                     lastAmount = ordersRepository.getAmountProductByCustomer(customerID, productID);
 
                     //if variable gets null, we change to 0...
-                    if (lastAmount == null) {
+                    if (lastAmount == null || lastAmount == 0) {
                         lastAmount = amount;
                     }
                 } catch (Exception ex) {
                     //we have no information for this product in priors sales order for this customer...
                     vlMsg = "This product has not been bought by this customers in priors sales orders...";
                     logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
+                    lastAmount = amount;
                 }
 
                 //if current amount is higher than last amount, we need to set prior amount for this purchase...
@@ -554,7 +590,16 @@ public class OrdersServiceImp implements OrdersService {
                 outFinalAmount = finalAmount;
 
                 //adding current product to list to update stock..
-                OrdersDetailDTO ordersDetailDTO = OrdersDetailDTO.builder().detailID(null).productID(productID).orders(null).amount(outFinalAmount).purchasedItems(items).build();
+                OrdersDetailDTO ordersDetailDTO = OrdersDetailDTO
+                        .builder()
+                        .detailID(null)
+                        .purchasedItems(items)
+                        .orders(null)
+                        .amount(outFinalAmount)
+                        .productID(productID)
+                        .build();
+
+                //add to final list to save to order detail...
                 ordersDetailToUpdateStock.add(ordersDetailDTO);
             }
         } catch (Exception ex) {

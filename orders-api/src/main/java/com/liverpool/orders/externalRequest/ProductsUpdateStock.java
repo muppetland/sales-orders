@@ -19,7 +19,7 @@ public class ProductsUpdateStock {
     private Integer stock;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private java.time.LocalDateTime registrationDateTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private java.time.LocalDate lastPurchase;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private java.time.LocalDateTime lastPurchase;
     private Boolean activate;
 }

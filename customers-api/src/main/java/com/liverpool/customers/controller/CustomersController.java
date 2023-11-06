@@ -27,38 +27,39 @@ public class CustomersController {
 
     @GetMapping("/{customerID}")
     public ResponseEntity<Customers> getCustomerByID(@PathVariable(value = "customerID", required = true) Long customerID, HttpServletRequest httpServletRequest) {
-        logsHandle.addLogController(logTracking, "API utilizada para consultar información del cliente por su ID en sistema.", httpServletRequest);
+        logsHandle.addLogController(logTracking, "API used to get information by customerID.", httpServletRequest);
         return new ResponseEntity<Customers>(customersService.getCustomerByID(customerID, logsHandle, httpServletRequest), HttpStatus.OK);
     }
 
     @GetMapping("/getCustomerByName")
     public ResponseEntity<CustomerResponse> getCustomerByCustomerNameID(@RequestParam(name = "customerName", required = true) String customerName, Long customerID, HttpServletRequest httpServletRequest) {
-        logsHandle.addLogController(logTracking, "API utilizada para consultar información del cliente por su nombre en sistema.", httpServletRequest);
+        logsHandle.addLogController(logTracking, "API used to get information by customerName.", httpServletRequest);
         return new ResponseEntity<CustomerResponse>(customersService.getCustomerByName(customerName, logsHandle, httpServletRequest), HttpStatus.OK);
     }
 
     @GetMapping("/getAllCustomers")
     public ResponseEntity<List<Customers>> getAllCustomers(HttpServletRequest httpServletRequest) {
-        logsHandle.addLogController(logTracking, "API utilizada para consultar información de todos los clientes registrados en sistema.", httpServletRequest);
+        logsHandle.addLogController(logTracking, "API used to get information for all customers registered.", httpServletRequest);
         return new ResponseEntity<List<Customers>>(customersService.getAllCustomers(logsHandle, httpServletRequest), HttpStatus.OK);
     }
 
     @PostMapping("/newCustomer")
     public ResponseEntity<Customers> newCustomer(@RequestBody Customers customers, HttpServletRequest httpServletRequest) {
-        logsHandle.addLogController(logTracking, "API utilizada para registrar un nuevo cliente en sistema.", httpServletRequest);
-        return new ResponseEntity<Customers>(customersService.newCustomer(customers, logsHandle, httpServletRequest), HttpStatus.OK);
+        logsHandle.addLogController(logTracking, "API used to create a new customer.", httpServletRequest);
+        return new ResponseEntity<Customers>(customersService.newCustomer(customers, logsHandle, httpServletRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("/updateCustomer")
     public ResponseEntity<Customers> updateCustomerByID(@RequestBody CustomerDTO customerDTO, HttpServletRequest httpServletRequest) {
-        logsHandle.addLogController(logTracking, "API utilizada para la edición de los datos de un cliente en sistema.", httpServletRequest);
+        logsHandle.addLogController(logTracking, "API used to update data from customerID.", httpServletRequest);
         return new ResponseEntity<Customers>(customersService.updateCustomerByID(customerDTO, logsHandle, httpServletRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteCustomer/{customerID}")
-    public ResponseEntity<HttpStatus> deleteCustomerByID(@PathVariable(value = "customerID", required = true) Long customerID, HttpServletRequest httpServletRequest) {
-        logsHandle.addLogController(logTracking, "API utilizada para eliminar un cliente por su ID e en sistema.", httpServletRequest);
+    public ResponseEntity<?> deleteCustomerByID(@PathVariable(value = "customerID", required = true) Long customerID, HttpServletRequest httpServletRequest) {
+        logsHandle.addLogController(logTracking, "API used to delete a customer by customerID.", httpServletRequest);
         customersService.deleteCustomerByID(customerID, logsHandle, httpServletRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Customer has been removed.", HttpStatus.OK);
     }
+
 }

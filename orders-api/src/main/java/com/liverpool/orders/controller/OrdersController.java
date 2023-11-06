@@ -37,7 +37,7 @@ public class OrdersController {
 
     @DeleteMapping("/cancelOrder")
     public ResponseEntity<OrdersResponse> cancelOrder(@RequestParam("orderID") String orderID, HttpServletRequest httpServletRequest) {
-        logsHandle.addLogController(logTracking, "API used to cancel an order and retrive products to stock.", httpServletRequest);
+        logsHandle.addLogController(logTracking, "API used to cancel an order and retrieve products to stock.", httpServletRequest);
         ordersService.cancelOrder(orderID, logsHandle, httpServletRequest);
         return new ResponseEntity<OrdersResponse>(ordersService.getOrderByID(orderID, logsHandle, httpServletRequest), HttpStatus.OK);
     }

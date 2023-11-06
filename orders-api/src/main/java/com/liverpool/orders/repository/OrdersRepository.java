@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, String> {
-    @Query(value = "Select amount From liverpool.ordersdetail Where orderid = (Select orderid From liverpool.orders Where customerid =:customerID and cancellationdatetime is null order by purchasedatetime desc limit 1) and productid =:productID", nativeQuery = true)
+    @Query(value = "Select amount From liverpool.ordersdetail Where orderid = (Select orderid From liverpool.orders Where customerid =:customerID and status = 'v' order by purchasedatetime desc limit 1) and productid =:productID order by productid desc limit 1 ", nativeQuery = true)
     public Double getAmountProductByCustomer(@Param("customerID") Long customerID, @Param("productID") Long productID);
 
     @Query(value = "Select * From liverpool.vw_ordersByID Where orderid =:orderID", nativeQuery = true)

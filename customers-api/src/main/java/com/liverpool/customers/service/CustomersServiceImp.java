@@ -27,24 +27,24 @@ public class CustomersServiceImp implements CustomersService {
     @Override
     public List<Customers> getAllCustomers(LogsHandle logsHandle, HttpServletRequest httpServletRequest) {
         //declare array to storage all records found...
-        vlMsg = "Declaramos el listado que contrendrá la información de los clientes vigentes en sistema.";
+        vlMsg = "Setup list to storage all customers availables in system.";
         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
         List<Customers> customersList = new ArrayList<Customers>();
 
         //request all customers...
-        vlMsg = "Realizamos la consulta para traer el listado de todos los clientes registrados en sistema.";
+        vlMsg = "Invoke query to get all customers availables in system.";
         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
         customersRepository.findAll().forEach(customersList::add);
 
         //if we don't have any record, we must notice...
         if (customersList.isEmpty()) {
-            vlMsg = "No tenemos hasta el momento ningun cliente registrado en sistema.";
+            vlMsg = "We have not customers registered yet.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             throw new IllegalQueryOperationException(vlMsg);
         }
 
         //customers found...
-        vlMsg = "A continuación presentamos un listado de los clientes encontrados en sistema.";
+        vlMsg = "Show a list of customers registered.";
         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
         return customersList;
     }
@@ -54,7 +54,7 @@ public class CustomersServiceImp implements CustomersService {
         //if request don't sent the customerID we can't continues...
         if (customerID == null || customerID <= 0) {
             //we can't continues 'cause customerID is mandatory for this action...
-            vlMsg = "Es necesario incluir en el pathvariable el ID del cliente, de lo contrario no podremos realizar la petición solicitada.";
+            vlMsg = "CustomerID is mandatory to continues with the process.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             throw new BadRequestException(vlMsg);
         } else {
@@ -63,13 +63,13 @@ public class CustomersServiceImp implements CustomersService {
                     .orElseThrow(() ->
                     {
                         //no record found...
-                        vlMsg = "No se ha encontrado información del clienteID [" + customerID + "]";
+                        vlMsg = "CustomerID [" + customerID + "] was not found.";
                         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                         throw new IllegalQueryOperationException(vlMsg);
                     });
 
             //customer found...
-            vlMsg = "El clienteID [" + customerID + "] se encuentra vigente en sistema.";
+            vlMsg = "CustomerID [" + customerID + "] is available.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             return customers;
         }
@@ -80,7 +80,7 @@ public class CustomersServiceImp implements CustomersService {
         //if request don't sent the customerName we can't continues...
         if (customerName == null || customerName.trim().equals("")) {
             //we can't continues 'cause customerName is mandatory for this action...
-            vlMsg = "Es necesario incluir en el pathvariable el nombre del cliente, de lo contrario no podremos realizar la petición solicitada.";
+            vlMsg = "customerName is mandatory to continues with the process.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             throw new BadRequestException(vlMsg);
         } else {
@@ -89,13 +89,13 @@ public class CustomersServiceImp implements CustomersService {
 
             if (customers == null) {
                 //no record found...
-                vlMsg = "No se ha encontrado información del cliente [" + customerName + "]";
+                vlMsg = "CustomerID [" + customerName + "] was not found.";
                 logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                 throw new IllegalQueryOperationException(vlMsg);
             }
 
             //customer found...
-            vlMsg = "El cliente [" + customerName + "] se encuentra vigente en sistema.";
+            vlMsg = "customerName [" + customerName + "] is already registered.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             CustomerResponse customerResponse = CustomerResponse
                     .builder()
@@ -110,51 +110,51 @@ public class CustomersServiceImp implements CustomersService {
     public Customers newCustomer(Customers customers, LogsHandle logsHandle, HttpServletRequest httpServletRequest) {
         //we need to know if the body sent have is not null...
         if (customers == null) {
-            vlMsg = "Es necesario enviar información en el cuerpo del API, de lo contrario no podremos proceder su petición.";
+            vlMsg = "CustomerID is mandatory to process this request.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             throw new BadRequestException(vlMsg);
         } else {
             //name must be included...
             if (customers.getCustomerName() == null || customers.getCustomerName().trim().equals("")) {
-                vlMsg = "Es necesario incluir el nombre del cliente a registrar, de lo contrario no podremos realizar la petición solicitada.";
+                vlMsg = "CustomerID and CustomerName must be sent to process this request.";
                 logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                 throw new BadRequestException(vlMsg);
             } else {
                 // date of birth must be included...
                 if (customers.getDateBirth() == null) {
-                    vlMsg = "Es necesario incluir la fecha de nacimiento del cliente a registrar, de lo contrario no podremos realizar la petición solicitada.";
+                    vlMsg = "Birthdate is mandatory to process this request.";
                     logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                     throw new BadRequestException(vlMsg);
                 } else {
                     //status must be included...
                     if (customers.getActivate() == null) {
-                        vlMsg = "Es necesario indicar con false o true la actividad del cliente a registrar, 'true' para activo y 'false' para inactivo, de lo contrario no podremos realizar la petición solicitada.";
+                        vlMsg = "Status is mandatory to process this request.";
                         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                         throw new BadRequestException(vlMsg);
                     } else {
                         //validate if current employee is not present in system...
-                        vlMsg = "Consultando información de los datos enviados.";
+                        vlMsg = "Getting information from parameters sent.";
                         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                         Customers customerFound = customersRepository.findByCustomerNameIgnoreCase(customers.getCustomerName().trim());
 
                         //validate if current record exists in system...
                         if (customerFound == null) {
                             //we can register current customer...
-                            vlMsg = "El registro enviado no existe, por lo tanto podemo registrar el cliente enviado.";
+                            vlMsg = "Data sent doesn't exist, we can continues with the process.";
                             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
 
                             //save record...
-                            vlMsg = "Guardamos el registro del objeto enviado.";
+                            vlMsg = "Save record.";
                             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                             Customers customersSaved = customersRepository.save(customers);
 
                             //customer saved...
-                            vlMsg = "El cliente se ha registrado con el siguiente ID [" + customersSaved.getCustomerID() + "]";
+                            vlMsg = "Customer was registered with ID [" + customersSaved.getCustomerID() + "]";
                             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                             return customersSaved;
                         } else {
                             // we can't continues 'cause this customer is already registered...
-                            vlMsg = "Lo sentimos, el cliente que intenta registrar ya existe en sistema.";
+                            vlMsg = "¡Ups!, data sent is present in our database, we can't continues.";
                             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                             throw new IllegalQueryOperationException(vlMsg);
                         }
@@ -169,7 +169,7 @@ public class CustomersServiceImp implements CustomersService {
         //if request don't sent the customerID we can't continues...
         if (customerDTO.getCustomerID() == null || customerDTO.getCustomerID() == 0) {
             //we can't continues 'cause customerID is mandatory for this action...
-            vlMsg = "Es necesario incluir el ID del cliente a modificar, de lo contrario no podremos realizar la petición solicitada.";
+            vlMsg = "customerID is mandatory to process the request.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             throw new BadRequestException(vlMsg);
         } else {
@@ -178,29 +178,29 @@ public class CustomersServiceImp implements CustomersService {
 
             //name must be included...
             if (customerDTO.getCustomerName() == null || customerDTO.getCustomerName().trim().equals("")) {
-                vlMsg = "Es necesario incluir el nombre del cliente a modificar, de lo contrario no podremos realizar la petición solicitada.";
+                vlMsg = "customerName is mandatory.";
                 logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                 throw new BadRequestException(vlMsg);
             } else {
                 // date of birth must be included...
                 if (customerDTO.getDateBirth() == null) {
-                    vlMsg = "Es necesario incluir la fecha de nacimiento del cliente a modificar, de lo contrario no podremos realizar la petición solicitada.";
+                    vlMsg = "Birthdate is mandatory.";
                     logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                     throw new BadRequestException(vlMsg);
                 } else {
                     //status must be included...
                     if (customerDTO.getActivate() == null) {
-                        vlMsg = "Es necesario indicar con false o true la actividad del cliente a modificar, 'true' para activo y 'false' para inactivo, de lo contrario no podremos realizar la petición solicitada.";
+                        vlMsg = "Active is mandatory.";
                         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                         throw new BadRequestException(vlMsg);
                     } else {
                         //we need to validate if customerID exists...
-                        vlMsg = "Validamos que el ID del cliente a editar exista.";
+                        vlMsg = "customerID should be exists.";
                         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                         customerFound = customersRepository.findById(customerDTO.getCustomerID())
                                 .orElseThrow(() -> {
                                     //we don't have information with those arguments...
-                                    vlMsg = "El ID del cliente enviado no existe, por lo tanto, no podremos actualizar los datos del cliente enviado.";
+                                    vlMsg = "customerID was not found, therefore we can't continues with the process.";
                                     logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                                     throw new IllegalQueryOperationException(vlMsg);
                                 });
@@ -209,13 +209,13 @@ public class CustomersServiceImp implements CustomersService {
             }
 
             //passing values to entity from dto...
-            vlMsg = "Pasando DTO a Entity para realizar la actualización de la información.";
+            vlMsg = "Convert DTO to Entity.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             //Customers customersEdit = DTOtoEntity(customerDTO);
             customerFound = DTOtoEntity(customerDTO);
 
             //if preview validations are ok, we can continues with the update...
-            vlMsg = "Realizamos la actualización de la información del clienteID enviado.";
+            vlMsg = "Updating.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             Customers customersEdited = customersRepository.save(customerFound);
             return customersEdited;
@@ -227,24 +227,24 @@ public class CustomersServiceImp implements CustomersService {
         //if request don't sent the customerID we can't continues...
         if (customerID == null || customerID == 0) {
             //we can't continues 'cause customerID is mandatory for this action...
-            vlMsg = "Es necesario incluir en el pathvariable el ID del cliente, de lo contrario no podremos realizar la petición solicitada.";
+            vlMsg = "customerID is mandatory.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             throw new BadRequestException(vlMsg);
         } else {
             //get information from current customer...
-            vlMsg = "Realizamos la consulta del clienteID [" + customerID + "]";
+            vlMsg = "Search customerID [" + customerID + "]";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             Customers customers = customersRepository.findById(customerID)
                     .orElseThrow(() ->
                     {
                         //no record found...
-                        vlMsg = "No se ha encontrado información del clienteID [" + customerID + "]";
+                        vlMsg = "customerID [" + customerID + "] is not found.";
                         logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
                         throw new IllegalQueryOperationException(vlMsg);
                     });
 
             //customer found...
-            vlMsg = "El clienteID [" + customerID + "] se ha eliminado del sistema.";
+            vlMsg = "customerID [" + customerID + "] has been deleted.";
             logsHandle.addLogController(logTracking, vlMsg, httpServletRequest);
             customersRepository.delete(customers);
         }
