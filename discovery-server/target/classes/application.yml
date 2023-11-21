@@ -1,0 +1,29 @@
+#set port for our api...
+server:
+  port: 8761
+
+#set name our application...
+spring:
+  application:
+    name: discovery-server
+
+#eureka setup...
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+
+  #logging...
+  logging:
+    level:
+      com:
+        netflix:
+          eureka: OFF
+          discovery: OFF
+
+#enable a file to post this data to ELK...
+logging:
+  file:
+    name: logs/liverpool-api.log

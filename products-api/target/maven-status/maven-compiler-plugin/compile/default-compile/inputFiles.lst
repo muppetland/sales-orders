@@ -1,0 +1,13 @@
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\conf\SwaggerConf.java
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\service\ProductsServiceImp.java
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\ProductsApplication.java
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\response\ProductsByNameResponse.java
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\service\ProductsService.java
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\entities\Products.java
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\logs\LogsHandle.java
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\controller\ProductsController.java
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\exceptions\ErrorMessage.java
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\exceptions\ResourceNotFoundException.java
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\repository\ProductsRepository.java
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\dto\ProductDTO.java
+C:\Users\eddir\Documents\liverpoolMicroservices\sales-orders\products-api\src\main\java\com\liverpool\products\exceptions\ControllerExceptionHandler.java
